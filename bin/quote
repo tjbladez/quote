@@ -1,10 +1,36 @@
 #!/usr/bin/env ruby
-
 require 'rubygems'
 require 'lib/quote'
+require 'getoptlong'
 
-if ARGV[0]
-  puts Quote.say ARGV[0]
-else
-  puts Quote.say
+USAGE = <<-EOU
+To get a random quote type: #{'quote'.green}\nOr search for a random quote using one or many of following criteria:
+#{'quote --theme/-t <argument>'.green} to search for a match in themes (ex. 'movie')
+#{'quote --quote/-q <argument>'.green} to search for a match in quote itself (ex. 'kick ass and chew gum')
+#{'quote --context/-c <argument>'.green} to search for a match in context quote was originated (ex. 'pulp fiction')
+#{'quote --source/-s <argument>'.green} to search for a match in originator of the quote (ex. 'the dude')
+#{'quote --help/-h'.green} to see this message
+EOU
+
+opts = GetoptLong.new(['--help', '-h', GetoptLong::NO_ARGUMENT],
+                      ['--source','-s', GetoptLong::REQUIRED_ARGUMENT],
+                      ['--context','-c', GetoptLong::REQUIRED_ARGUMENT],
+                      ['--quote','-q', GetoptLong::REQUIRED_ARGUMENT],
+                      ['--theme','-t', GetoptLong::REQUIRED_ARGUMENT])
+criteria = {}
+begin
+opts.each do |flag, arg|
+  if flag == '--help'
+    puts USAGE; exit(0)
+  else
+    criteria[flag.gsub('--','')] = arg
+  end
 end
+rescue GetoptLong::InvalidOption => e
+  puts "Please type quote -h for usage"
+  exit(0)
+rescue GetoptLong::MissingArgument => e
+  puts "You do need to pass an argument for matching"
+  exit(0)
+end
+puts Quote.say(criteria)

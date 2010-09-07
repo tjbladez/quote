@@ -17,5 +17,4 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/tjbladez/quote}
   s.summary = %q{Awesome quotes from different sources}
   s.post_install_message = %q{You are now ready to enjoy and maintain your quotes}
-  s.add_development_dependency 'getoptlong'
 end

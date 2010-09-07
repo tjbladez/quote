@@ -1,6 +1,5 @@
 require 'yajl'
 require 'colored'
-require 'ruby-debug'
 
 module ArrayExtensions
   def where(criteria ={})

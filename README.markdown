@@ -9,10 +9,14 @@ Maintain and quote your awesome quotes from movies, games and other sources from
 To get a random quote:
 <code>quote</code>
 
-To get a random quote from a matching source:
-<code>quote source</code>
+To search for a specific quote check usage:
+<code>quote -h</code>
 
 ### Adding quote ###
+
+WIP
+
+### Deleting quote(s) ###
 
 WIP
 

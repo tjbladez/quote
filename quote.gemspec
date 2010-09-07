@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
   s.authors = ['tjbladez']
-  s.date = %q{2010-08-25}
-  s.description = %q{Quotes - maintain them, get them conviniently from command line}
+  s.date = %q{2010-09-07}
+  s.description = %q{Awesome quotes - maintain them, get them conviniently from command line}
   s.email = %q{tjbladez@gmail.com}
   s.files = FileList['{bin,lib}/**/*', 'README.markdown'].to_a
   s.has_rdoc = false
@@ -17,4 +17,5 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/tjbladez/quote}
   s.summary = %q{Awesome quotes from different sources}
   s.post_install_message = %q{You are now ready to enjoy and maintain your quotes}
+  s.add_development_dependency 'getoptlong'
 end

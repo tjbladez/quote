@@ -4,12 +4,17 @@ require 'quote'
 require 'getoptlong'
 
 USAGE = <<-EOU
-To get a random quote type: #{'quote'.green}\nOr search for a random quote using one or many of following criteria:
+To get a random quote type: #{'quote'.green}\n
+Or you may use following options:
 #{'quote --theme/-t <argument>'.green} to search for a match in themes (ex. 'movie')
 #{'quote --quote/-q <argument>'.green} to search for a match in quote itself (ex. 'kick ass and chew gum')
 #{'quote --context/-c <argument>'.green} to search for a match in context quote was originated (ex. 'pulp fiction')
 #{'quote --source/-s <argument>'.green} to search for a match in originator of the quote (ex. 'the dude')
+#{'quote --add/-a <argument>'.green} to add a quote your argument needs to be a valid JSON containing source, context, quote, theme params
 #{'quote --help/-h'.green} to see this message
+You can see pretty colorized output if you set environment variable QUOTE_COLORIZE to 'true'.
+You can specify your own path to quotes files via environment variable QUOTE_SOURCE.
+Search by multiple criteria is supported.
 EOU
 
 opts = GetoptLong.new(['--help', '-h', GetoptLong::NO_ARGUMENT],
@@ -20,11 +25,9 @@ opts = GetoptLong.new(['--help', '-h', GetoptLong::NO_ARGUMENT],
 criteria = {}
 begin
 opts.each do |flag, arg|
-  if flag == '--help'
-    puts USAGE; exit(0)
-  else
-    criteria[flag.gsub('--','')] = arg
-  end
+  puts USAGE; exit(0) if flag == '--help'
+  puts Quote.add(arg); exit(0) if flag == '--add'
+  criteria[flag.gsub('--','')] = arg
 end
 rescue GetoptLong::InvalidOption => e
   puts "Please type quote -h for usage"

@@ -2,7 +2,7 @@ require 'rake'
 
 Gem::Specification.new do |s|
   s.name = %q{quote}
-  s.version = '0.1.1'
+  s.version = '0.1.5'
 
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
   s.authors = ['tjbladez']
@@ -19,4 +19,6 @@ Gem::Specification.new do |s|
   s.post_install_message = %q{You are now ready to enjoy and maintain your quotes}
   s.add_development_dependency 'yajl-ruby'
   s.add_development_dependency 'colored'
+  s.add_development_dependency 'riot'
+  s.add_development_dependency 'rake'
 end

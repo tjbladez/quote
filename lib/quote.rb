@@ -41,6 +41,7 @@ module Quote
   class << self
     def say(criteria = {})
       random_quote = load_quotes.where(criteria).random
+      return "No quote found" unless random_quote
       ENV['QUOTE_COLORIZE'] == "true" ? random_quote.format_with_color : random_quote.format
     end
 

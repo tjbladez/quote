@@ -34,6 +34,13 @@ context "Quote" do
     asserts("gets a random formatted quote from quotes") { @quotes.map(&:format).include?(topic)}
   end
 
+  context "#say with criteria" do
+    setup do
+      topic.say({:context => "MAGIC"})
+    end
+    asserts("no quote message if no quotes were found") { topic}.equals("No quote found")
+  end
+
   context "#add with invalid json" do
     setup {topic.add("this is not a valid json")}
     asserts("returns parsing error message") { topic}.equals("Please supply a valid json")

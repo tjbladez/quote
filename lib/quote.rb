@@ -45,6 +45,12 @@ module Quote
       ENV['QUOTE_COLORIZE'] == "true" ? random_quote.format_with_color : random_quote.format
     end
 
+    def say_all(criteria = {})
+      quotes = load_quotes.where(criteria)
+      return "No quotes found" if quotes.empty?
+      ENV['QUOTE_COLORIZE'] == "true" ? quotes.map(&:format_with_color) : quotes.map(&:format)
+    end
+
     def add(json)
       quote = Yajl::Parser.parse(json)
       missing_criteria = []

@@ -41,6 +41,48 @@ context "Quote" do
     asserts("no quote message if no quotes were found") { topic}.equals("No quote found")
   end
 
+  context "#say_all without QUOTE_COLORIZE without criteria" do
+    setup { topic.say_all}
+    should("match all quotes"){topic.to_set}.equals{@quotes.map(&:format).to_set}
+  end
+
+  context "#say_all without QUOTE_COLORIZE with criteria" do
+    setup do
+      @matched_quotes = @quotes.select{|i| i["source"].to_s.match(/unreliable source/)}.map(&:format)
+      topic.say_all({"source" => "unreliable source"})
+    end
+    asserts("matches all quotes for the criteria") do
+      topic
+    end.equals{@matched_quotes}
+  end
+
+  context "#say_all with QUOTE_COLORIZE without criteria" do
+    setup do
+      ENV['QUOTE_COLORIZE'] = 'true'
+      topic.say_all
+    end
+    should("match all quotes"){topic.to_set}.equals{@quotes.map(&:format_with_color).to_set}
+  end
+
+  context "#say_all with QUOTE_COLORIZE with criteria" do
+    setup do
+      ENV['QUOTE_COLORIZE'] = 'true'
+      @matched_quotes = @quotes.select{|i| i["source"].to_s.match(/unreliable source/)}.map(&:format_with_color)
+      topic.say_all({"source" => "unreliable source"})
+    end
+    asserts("matches all quotes for the criteria") do
+      topic
+    end.equals{@matched_quotes}
+  end
+
+
+  context "#say_all with non matching criteria" do
+    setup do
+      topic.say_all({"source" => "FFFFFFFFFFBBBBBBBBBCCCCCCCC"})
+    end
+    asserts("no quote message if no quotes were found") { topic}.equals("No quotes found")
+  end
+
   context "#add with invalid json" do
     setup {topic.add("this is not a valid json")}
     asserts("returns parsing error message") { topic}.equals("Please supply a valid json")

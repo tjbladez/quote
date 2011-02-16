@@ -11,6 +11,7 @@ Or you may use following options:
 #{'quote --context/-c <argument>'.green} to search for a match in context quote was originated (ex. 'pulp fiction')
 #{'quote --source/-s <argument>'.green} to search for a match in originator of the quote (ex. 'the dude')
 #{'quote --add/-a <argument>'.green} to add a quote your argument needs to be a valid JSON containing source, context, quote, theme params
+#{'quote --all/-e'.green} to search for all quotes with matches
 #{'quote --help/-h'.green} to see this message
 You can see pretty colorized output if you set environment variable QUOTE_COLORIZE to 'true'.
 You can specify your own path to quotes files via environment variable QUOTE_SOURCE.
@@ -18,16 +19,22 @@ Search by multiple criteria is supported.
 EOU
 
 opts = GetoptLong.new(['--help', '-h', GetoptLong::NO_ARGUMENT],
+                      ['--all', '-e', GetoptLong::NO_ARGUMENT],
+                      ['--add','-a', GetoptLong::REQUIRED_ARGUMENT],
                       ['--source','-s', GetoptLong::REQUIRED_ARGUMENT],
                       ['--context','-c', GetoptLong::REQUIRED_ARGUMENT],
                       ['--quote','-q', GetoptLong::REQUIRED_ARGUMENT],
                       ['--theme','-t', GetoptLong::REQUIRED_ARGUMENT])
 criteria = {}
+say_all = false
 begin
 opts.each do |flag, arg|
-  puts USAGE; exit(0) if flag == '--help'
-  puts Quote.add(arg); exit(0) if flag == '--add'
-  criteria[flag.gsub('--','')] = arg
+  case(flag)
+  when '--help' then puts USAGE; exit(0)
+  when '--add' then puts Quote.add(arg); exit(0)
+  when '--all' then say_all = true
+  else criteria[flag.gsub('--', '')] = arg
+  end
 end
 rescue GetoptLong::InvalidOption => e
   puts "Please type quote -h for usage"
@@ -36,4 +43,5 @@ rescue GetoptLong::MissingArgument => e
   puts "You do need to pass an argument for matching"
   exit(0)
 end
-puts Quote.say(criteria)
+
+puts say_all ? Quote.say_all(criteria) : Quote.say(criteria)
